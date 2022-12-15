@@ -17,19 +17,30 @@ func _process(delta):
 		add_child(new_hand)
 
 
-func nearest(pos : Vector2, ids : Array):
-	var nearest_no_type
+func nearest(hand, ids : Array):
+	var nearest_no_type = null
 	var nearest_with_type = null
 	
+	var pos = hand.position
+	
 	for child in get_children():
-		var dist = pos.distance_to(child.position)
-		var near_dist = pos.distance_to(nearest_no_type.position)
-		var near_type_dist = pos.distance_to(nearest_with_type.position)
+		if child.type_id == hand.type_id: continue
 		
-		if dist < near_dist:
+		var dist = pos.distance_to(child.position)
+
+		if nearest_no_type == null:
 			nearest_no_type = child
-		if dist < nearest_with_type and child.type_id in ids:
+		else:
+			var near_dist = pos.distance_to(nearest_no_type.position)
+			if dist < near_dist:
+				nearest_no_type = child
+		
+		if nearest_with_type == null:
 			nearest_with_type = child
+		else:
+			var near_dist = pos.distance_to(nearest_with_type.position)
+			if dist < near_dist and child.type_id in ids:
+				nearest_with_type = child
 	
 	if nearest_with_type == null:
 		return nearest_no_type
