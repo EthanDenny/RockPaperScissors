@@ -1,6 +1,8 @@
 extends Node2D
 
 
+export var movement_speed = 1
+
 var hands = [
 	"res://Scenes/Paper.tscn",
 	"res://Scenes/Rock.tscn",
@@ -15,6 +17,12 @@ func _process(delta):
 		var new_hand = load(hands[0]).instance()
 		new_hand.position = get_global_mouse_position()
 		add_child(new_hand)
+	if Input.is_action_just_pressed("toggle_simulate"):
+		for child in get_children():
+			if child.speed > 0:
+				child.speed = 0
+			else:
+				child.speed = movement_speed
 
 
 func nearest(hand, ids : Array):

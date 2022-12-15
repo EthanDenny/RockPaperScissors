@@ -21,13 +21,14 @@ func _physics_process(delta):
 		var velocity = position.direction_to(target.position) * speed
 		position += velocity
 	
-	for body in $Area2D.get_overlapping_areas():
-		var hand = body.get_parent()
-		if hand.type_id != type_id:
-			if hand.type_id in prey_ids:
-				eat(hand)
-			if hand.type_id in predator_ids:
-				hand.eat(self)
+	if speed > 0:
+		for body in $Area2D.get_overlapping_areas():
+			var hand = body.get_parent()
+			if hand.type_id != type_id:
+				if hand.type_id in prey_ids:
+					eat(hand)
+				if hand.type_id in predator_ids:
+					hand.eat(self)
 
 
 func eat(hand):
