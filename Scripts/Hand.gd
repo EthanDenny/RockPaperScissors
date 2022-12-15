@@ -1,5 +1,6 @@
 extends Node
 
+
 export(int) var type_id
 export var prey_ids = []
 export var predator_ids = []
