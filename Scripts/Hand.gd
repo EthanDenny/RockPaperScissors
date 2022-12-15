@@ -9,13 +9,12 @@ var speed = 0
 var target = null
 
 
-func _ready():
-	find_target()
-
-
 func _physics_process(delta):
+	if target == null:
+		find_target()
+	
 	if target != null and target.type_id == type_id:
-			find_target()
+		find_target()
 	
 	if target != null:
 		var velocity = position.direction_to(target.position) * speed
