@@ -1,7 +1,7 @@
 extends Node2D
 
 
-export var movement_speed = 1
+export var movement_speed = 64
 
 var hands = [
 	"res://Scenes/Paper.tscn",

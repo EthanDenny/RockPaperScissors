@@ -1,4 +1,4 @@
-extends Node2D
+extends KinematicBody2D
 
 
 export(int) var type_id
@@ -10,19 +10,16 @@ var target = null
 
 
 func _physics_process(delta):
-	if target == null:
-		find_target()
-	
-	if target != null and target.type_id == type_id:
+	if target == null or target.type_id == type_id:
 		find_target()
 	
 	if target != null:
 		var velocity = position.direction_to(target.position) * speed
-		position += velocity
-	
-	if speed > 0:
-		for body in $Area2D.get_overlapping_areas():
-			var hand = body.get_parent()
+		var collision = move_and_collide(velocity * delta)
+		if collision:
+			velocity = velocity.slide(collision.normal)
+
+			var hand = collision.collider
 			if hand.type_id != type_id:
 				if hand.type_id in prey_ids:
 					eat(hand)
