@@ -29,7 +29,11 @@ func nearest(hand, ids : Array):
 	
 	var pos = hand.position
 	
+	var all_same_type = true
+	var check_type = get_child(0).type_id
+	
 	for child in get_children():
+		if child.type_id != check_type: all_same_type = false
 		if child.type_id == hand.type_id: continue
 		
 		var dist = pos.distance_to(child.position)
@@ -47,6 +51,9 @@ func nearest(hand, ids : Array):
 			var near_dist = pos.distance_to(nearest_with_type.position)
 			if dist < near_dist and child.type_id in ids:
 				nearest_with_type = child
+	
+	if all_same_type:
+		simulate = false
 	
 	if nearest_with_type == null:
 		return nearest_no_type
