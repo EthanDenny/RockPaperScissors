@@ -13,7 +13,7 @@ func _physics_process(delta):
 	if target == null or target.type_id == type_id:
 		find_target()
 	
-	if target != null:
+	if target != null and get_parent().simulate:
 		var velocity = position.direction_to(target.position) * speed
 		var collision = move_and_collide(velocity * delta)
 		if collision:
