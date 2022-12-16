@@ -11,11 +11,14 @@ var hands = [
 ]
 
 
+func _ready():
+	randomize()
+
+
 func _process(delta):
 	if Input.is_action_just_pressed("spawn"):
-		randomize()
-		hands.shuffle()
-		var new_hand = load(hands[0]).instance()
+		var chosen_hand = hands[randi() % len(hands)]
+		var new_hand = load(chosen_hand).instance()
 		new_hand.position = get_global_mouse_position()
 		new_hand.speed = movement_speed
 		add_child(new_hand)
