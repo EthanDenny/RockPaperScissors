@@ -17,8 +17,6 @@ func _physics_process(delta):
 		var velocity = position.direction_to(target.position) * speed
 		var collision = move_and_collide(velocity * delta)
 		if collision:
-			velocity = velocity.slide(collision.normal)
-
 			var hand = collision.collider
 			if hand.type_id != type_id:
 				if hand.type_id in prey_ids:
