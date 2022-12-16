@@ -35,4 +35,4 @@ func eat(hand):
 
 
 func find_target():
-	target = get_parent().nearest(self, prey_ids)
+	target = get_parent().get_target(self, prey_ids)

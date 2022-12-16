@@ -26,39 +26,43 @@ func _process(delta):
 		simulate = not simulate
 
 
-func nearest(hand, ids : Array):
-	var nearest_no_type = null
-	var nearest_with_type = null
-	
+# Checks if all the hands are the same type
+func all_same_type():
+	var check_type = get_child(0).type_id
+	for child in get_children():
+		if child.type_id != check_type: return false
+	return true
+
+# Finds the nearest hand to the given hand,
+# which will have one of the ids in the list
+# if a list is provided
+func find_nearest_to(hand, ids = []):
+	var nearest_hand = null
 	var pos = hand.position
 	
-	var all_same_type = true
-	var check_type = get_child(0).type_id
-	
 	for child in get_children():
-		if child.type_id != check_type: all_same_type = false
 		if child.type_id == hand.type_id: continue
 		
-		var dist = pos.distance_to(child.position)
-
-		if nearest_no_type == null:
-			nearest_no_type = child
+		if nearest_hand == null:
+			nearest_hand = child
 		else:
-			var near_dist = pos.distance_to(nearest_no_type.position)
-			if dist < near_dist:
-				nearest_no_type = child
-		
-		if nearest_with_type == null:
-			nearest_with_type = child
-		else:
-			var near_dist = pos.distance_to(nearest_with_type.position)
-			if dist < near_dist and child.type_id in ids:
-				nearest_with_type = child
+			var dist = pos.distance_to(child.position)
+			var near_dist = pos.distance_to(nearest_hand.position)
+			
+			if dist < near_dist and (ids == [] or child.type_id in ids):
+				nearest_hand = child
 	
-	if all_same_type:
+	return nearest_hand
+
+# Finds an appropriate target for the given hand,
+# and also uses the oppurtunity to check whether
+# the simulation should be paused
+func get_target(hand, ids = []):
+	if all_same_type():
 		simulate = false
 	
-	if nearest_with_type == null:
-		return nearest_no_type
-	else:
-		return nearest_with_type
+	var nearest_hand = find_nearest_to(hand, ids)
+	if nearest_hand == null:
+		nearest_hand = find_nearest_to(hand)
+	
+	return nearest_hand
