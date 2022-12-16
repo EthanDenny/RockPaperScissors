@@ -3,7 +3,6 @@ extends KinematicBody2D
 
 export(int) var type_id
 export var prey_ids = []
-export var predator_ids = []
 
 var speed = 0
 var target = null
@@ -21,7 +20,7 @@ func _physics_process(delta):
 			if hand.type_id != type_id:
 				if hand.type_id in prey_ids:
 					eat(hand)
-				if hand.type_id in predator_ids:
+				if type_id in hand.prey_ids:
 					hand.eat(self)
 
 
@@ -29,7 +28,6 @@ func eat(hand):
 	hand.find_node("Sprite").texture = $Sprite.texture
 	hand.type_id = type_id
 	hand.prey_ids = prey_ids
-	hand.predator_ids = predator_ids
 	find_target()
 	hand.find_target()
 
